@@ -117,7 +117,7 @@ def PutChangesInDatabase(executeString, values):
 
 MAIN_COMPANY = "passion"
 MIN_GRADE = 0
-SUPER_ADMIN_ID = 31 if 'DB_USER' in os.environ else 1
+SUPER_ADMIN_ID = 1
 
 # Register page.
 @app.route('/register', methods=['GET', 'POST'])
