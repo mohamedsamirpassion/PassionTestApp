@@ -116,7 +116,7 @@ def PutChangesInDatabase(executeString, values):
     cur.close()
 
 MAIN_COMPANY = "passion"
-MIN_GRADE = 0
+MIN_GRADE = 19
 SUPER_ADMIN_ID = 1
 
 # Register page.
