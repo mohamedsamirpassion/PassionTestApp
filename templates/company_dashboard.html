@@ -42,7 +42,7 @@
                   Dropdown button
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  {% for admin in admins if admin.company == company.user_name %}
+                  {% for admin in admins if admin.company == company.user_name.lower() %}
                     <div>
                       <p class="dropdown-item" href="#">
                         {{ admin.name }}
