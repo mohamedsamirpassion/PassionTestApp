@@ -10,15 +10,26 @@
 
 {% block labels %}
 <label style="font-size: 18px">Name<span style="color: red;">*</span></label>
-<input type="text" name="name" class="form-control" required autofocus>
+<input type="text" name="name" class="form-control" placeholder="Name" required autofocus>
 <label style="font-size: 18px">Phone<span style="color: red;">*</span></label>
-<input type="number" name="phone" class="form-control" required>
+<input type="number" name="phone" placeholder="Phone number" class="form-control" required>
 <label style="font-size: 18px">Email</label>
-<input type="email" name="email" class="form-control">
+<input type="email" name="email" placeholder="JohnDoe@company.com" class="form-control">
+{% if company =='seera' %}
+
+<input type="hidden" name="hrid" placeholder="HRID" class="form-control" >
+<label style="font-size: 18px">SFID<span style="color: red;">*</span></label>
+<input type="text" name="sfid" placeholder="SFID" class="form-control" required>
+{%else%}
+ 
+<input type="hidden" name="hrid" placeholder="HRID" class="form-control" hidden>
+ 
+<input type="hidden" name="sfid" placeholder="SFID" class="form-control" >
+{% endif %}
 <label style="font-size: 18px">Password<span style="color: red;">*</span></label>
-<input type="password" name="password" class="form-control" id="passwordlabel" required>
+<input type="password" name="password" placeholder="Password" class="form-control" id="passwordlabel" required>
 <label style="font-size: 18px">Confirm Password<span style="color: red;">*</span></label>
-<input type="password" name="confirm" class="form-control" id="confirmlabel" required>
+<input type="password" name="confirm" class="form-control" placeholder=" Confirm Password" id="confirmlabel" required>
 {% endblock %}
 
 {% block submit_button %} Submit {% endblock %}

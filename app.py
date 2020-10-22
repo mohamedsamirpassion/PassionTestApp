@@ -33,7 +33,7 @@ if 'DB_USER' in os.environ :
 else :
     app.config["MYSQL_HOST"] = "localhost"
     app.config["MYSQL_USER"] = "root"
-    app.config["MYSQL_PASSWORD"] = "M01019056637m"
+    app.config["MYSQL_PASSWORD"] = "12345@Test"
     app.config["MYSQL_DB"] = "passiontest"
     app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
@@ -126,13 +126,22 @@ def Register(company=MAIN_COMPANY):
 
     # See if the company is exists.
     companyUsername = SearchInTheDatabaseWithValue("SELECT user_name FROM companies WHERE user_name = %s", [company])
+    # if companyUsername== 'seera':
+    #     __debug__
+    #     return render_template("error_messages.html", message="joe " + company)
     
+    
+
+
     if not companyUsername:
         return render_template("error_messages.html", message="There is no company named " + company)
 
     # In 'GET' request case.
     if request.method == 'GET':
-        return render_template("register.html", company=company)
+        if company=='seera':
+                 return render_template("register.html", company=company)
+        else:
+                 return render_template("register.html", company=company)
 
     # In 'POST' request case.
     if request.method == 'POST':
@@ -141,6 +150,8 @@ def Register(company=MAIN_COMPANY):
         name = request.form['name']
         phone = str(request.form['phone'])
         email = request.form['email']
+        hrid = request.form['hrid']
+        sfid = request.form['sfid']
         password = request.form['password']
         confirm = request.form['confirm']
 
@@ -153,7 +164,7 @@ def Register(company=MAIN_COMPANY):
 
         if len(email) > 50:
             return render_template("register.html", error="Invalid Email. Try again")
-
+  
         if len(password) < 6:
             return render_template("register.html", error="The password is too short. Try again") 
         
@@ -181,8 +192,8 @@ def Register(company=MAIN_COMPANY):
 
         # Insert user data in the 'users' table.
         try:
-            PutChangesInDatabase("INSERT INTO users(name, phone, email, password, company) VALUES(%s, %s, %s, %s, %s)",
-            (name, phone, email, password, company))
+            PutChangesInDatabase("INSERT INTO users(name, phone, email,hrId,sfId, password, company) VALUES(%s, %s, %s, %s, %s,%s, %s)",
+            (name, phone, email,hrid,sfid, password, company))
         except Exception as e:
             print(e)
             
@@ -203,6 +214,7 @@ def AdminRegister(company=MAIN_COMPANY):
 
     # In 'GET' request case.
     if request.method == 'GET':
+      
         return render_template("admin_register.html", company=company)
 
     # In 'POST' request case.
@@ -844,12 +856,11 @@ def UserResults():
     userTests.reverse()
 
     # Get user data
-    userRow = FetchFromTheDatabseWithValue("SELECT name, phone, email, date FROM users WHERE id = %s", [session['user_id']])[0]
-
+    userRow = FetchFromTheDatabseWithValue("SELECT name, phone, email,company, date FROM users WHERE id = %s", [session['user_id']])[0]
+ 
     Logout()
-
     return render_template('test_results.html', tests=userTests, userRow=userRow)
-     
+
     
 # Tests results page for admins.
 @app.route('/tests_results/<string:id>')
@@ -984,7 +995,7 @@ def PassTest(id, test):
 def DownloadUsers():
     
     # Get all users data.
-    users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email, date FROM users WHERE company = %s", [session["admin_company"]])
+    users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email,sfId, date FROM users WHERE company = %s", [session["admin_company"]])
 
     # Get the last test for each user.
     usersTests = []
@@ -997,7 +1008,7 @@ def DownloadUsers():
 
         # Write the file head.
         writer.writerow([
-            'ID', 'Name', 'Phone', 'Email', 'Registration date', "Exam date", 
+            'ID', 'Name', 'Phone', 'Email','SFID', 'Registration date', "Exam date", 
             'Listening_Pre_A1(4)', 'Reading_Pre_A1(4)', 'Grammar_Pre_A1(4)', 'Functional_language_Pre_A1(4)', 'Grammar_Pre_A1(8)', 'Pre_A1(24)',
             'listening_A1(4)', 'Reading_A1(4)', 'Vocabulary_A1(4)', 'Functional_language_A1(4)', 'Grammar_A1(8)', 'A1(24)', 
             'listening_A2(4)', 'Reading_A2(4)', 'Vocabulary_A2(4)', 'Functional_language_A2(4)', 'Grammar_A2(8)', 'A2(24)', 
@@ -1020,7 +1031,7 @@ def DownloadUsers():
 def datetimefilter(value, format="%Y-%m-%d %H:%M:%S"):
     value = value + timedelta(weeks=0, days=0, hours=2, minutes=0, seconds=0)
     return value.strftime(format)
-
+#joe test
 app.jinja_env.filters['datetimefilter'] = datetimefilter
 
 
