@@ -995,12 +995,12 @@ def PassTest(id, test):
 def DownloadUsers():
     
     # Get all users data.
-    users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email,sfId, date FROM users WHERE company = %s", [session["admin_company"]])
+    users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email,sfId, date,case when got_pre_a1=0 then 'Pre' when got_a1=0 then 'A1' when got_a2=0 then 'A2' when got_b1=0 then 'B1' when got_b2=0 then 'B2' end , case when p_pre_a1=0 then 'Pre' when p_a1=0 then 'A1' when p_a2=0 then 'A2' when p_b1 =0 then 'B1'  end FROM users WHERE company = %s", [session["admin_company"]])
 
     # Get the last test for each user.
     usersTests = []
     for user in users:
-        usersTests.append(FetchFromTheDatabse("SELECT * FROM tests WHERE test_num = (SELECT COUNT(*) FROM tests WHERE id = {0}) AND id = {1}".format(user['id'], user['id'])))
+        usersTests.append(FetchFromTheDatabse("SELECT *  FROM tests WHERE test_num = (SELECT COUNT(*) FROM tests WHERE id = {0}) AND id = {1}".format(user['id'], user['id'])))
 
     # Wite the data in the 'users,csv' file.
     with open("users.csv", 'w', newline='') as csvFile:
@@ -1008,12 +1008,12 @@ def DownloadUsers():
 
         # Write the file head.
         writer.writerow([
-            'ID', 'Name', 'Phone', 'Email','SFID', 'Registration date', "Exam date", 
+            'ID', 'Name', 'Phone', 'Email','SFID','Registration date','UserStatus','AdminPass',"Exam date", 
             'Listening_Pre_A1(4)', 'Reading_Pre_A1(4)', 'Grammar_Pre_A1(4)', 'Functional_language_Pre_A1(4)', 'Grammar_Pre_A1(8)', 'Pre_A1(24)',
             'listening_A1(4)', 'Reading_A1(4)', 'Vocabulary_A1(4)', 'Functional_language_A1(4)', 'Grammar_A1(8)', 'A1(24)', 
             'listening_A2(4)', 'Reading_A2(4)', 'Vocabulary_A2(4)', 'Functional_language_A2(4)', 'Grammar_A2(8)', 'A2(24)', 
             'listening_B1(4)', 'Reading_B1(4)', 'phonetics_B1(4)', 'Functional_language_B1(4)', 'Grammar_B1(8)', 'B1(24)', 
-            'listening_B2(4)', 'Reading_B2(4)', 'Vocabulary_B2(4)', 'Functional_language_B2(4)', 'Grammar_B2(8)', 'B2(24)', 
+            'listening_B2(4)', 'Reading_B2(4)', 'Vocabulary_B2(4)', 'Functional_language_B2(4)', 'Grammar_B2(8)', 'B2(24)',
             ])
         
         # Write users data.
