@@ -877,7 +877,7 @@ def TestsResults(id):
     if userRow['company'] != session["admin_company"]:
         return render_template("error_messages.html", message="You are not allowed to view this user!")
     
-    return render_template('test_results.html', tests=userTests, userRow=userRow)
+    return render_template('test_resultsPass.html', tests=userTests, userRow=userRow)
 
 # Delete user.
 @app.route('/delete/<string:id>/')
