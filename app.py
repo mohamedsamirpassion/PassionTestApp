@@ -31,17 +31,17 @@ if 'DB_USER' in os.environ :
     app.config["MYSQL_DB"] = os.environ['DB_NAME']
     app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 else :
-    #Local
+   # Local
     app.config["MYSQL_HOST"] = "localhost"
     app.config["MYSQL_USER"] = "root"
     app.config["MYSQL_PASSWORD"] = "12345@Test"
     app.config["MYSQL_DB"] = "passiontest"
     app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 #Server
-    # app.config["MYSQL_HOST"] = "heroku_951e04ea3511920"
-    # app.config["MYSQL_USER"] = "b45ed531e66e21"
-    # app.config["MYSQL_PASSWORD"] = "96326a4b"
-    # app.config["MYSQL_DB"] = "heroku_951e04ea3511920"
+    # app.config["MYSQL_HOST"] = "eu-mm-auto-dub-03-b.cleardb.net"
+    # app.config["MYSQL_USER"] = "bf1c346b9ba807"
+    # app.config["MYSQL_PASSWORD"] = "f6fe0b06"
+    # app.config["MYSQL_DB"] = "heroku_4171de8c90d24ee"
     # app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
@@ -1009,7 +1009,7 @@ def DownloadUsers():
     # Get the last test for each user.
     usersTests = []
     for user in users:
-        usersTests.append(FetchFromTheDatabse("SELECT * , case when pre_a1<13 then 'Pre' when a1<13 then 'A1' when a2<13 then 'A2' when b1<13 then 'B1' when b2<13 then 'B2' end   FROM tests WHERE test_num = (SELECT COUNT(*) FROM tests WHERE id = {0}) AND id = {1}".format(user['id'], user['id'])))
+        usersTests.append(FetchFromTheDatabse("SELECT * , case when (pre_a1<13 or a1 is null)  then 'Pre' when (a1<13 or a2 is null ) then 'A1' when (a2<13 or b1 is null ) then 'A2' when (b1<13 or b2 is null) then 'B1' when (b2<13 or b2>13) then 'B2'     end   FROM tests WHERE test_num = (SELECT COUNT(*) FROM tests WHERE id = {0}) AND id = {1}".format(user['id'], user['id'])))
 
     # Wite the data in the 'users,csv' file.
     with open("users.csv", 'w', newline='') as csvFile:
