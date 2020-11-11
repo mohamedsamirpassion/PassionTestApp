@@ -1009,7 +1009,7 @@ def DownloadUsers():
     # Get the last test for each user.
     usersTests = []
     for user in users:
-        usersTests.append(FetchFromTheDatabse("SELECT * , case when (pre_a1<13 or a1 is null)  then 'Pre' when (a1<13 or a2 is null ) then 'A1' when (a2<13 or b1 is null ) then 'A2' when (b1<13 or b2 is null) then 'B1' when (b2<13 ) then 'B2' when (b2>13) then 'C1'     end   FROM tests WHERE test_num = (SELECT COUNT(*) FROM tests WHERE id = {0}) AND id = {1}".format(user['id'], user['id'])))
+        usersTests.append(FetchFromTheDatabse("SELECT * , case when (pre_a1<19 or a1 is null)  then 'Pre' when (a1<19 or a2 is null ) then 'A1' when (a2<19 or b1 is null ) then 'A2' when (b1<19 or b2 is null) then 'B1' when (b2<19 ) then 'B2' when (b2>19) then 'C1'     end   FROM tests WHERE test_num = (SELECT COUNT(*) FROM tests WHERE id = {0}) AND id = {1}".format(user['id'], user['id'])))
 
     # Wite the data in the 'users,csv' file.
     with open("users.csv", 'w', newline='') as csvFile:
