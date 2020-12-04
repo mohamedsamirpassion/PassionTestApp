@@ -5,7 +5,7 @@ from functools import wraps
 import csv
 import os
 from io import BytesIO
-
+from flask import Markup
 import pytz
 from pytz import timezone
 import tzlocal
@@ -13,7 +13,6 @@ from datetime import timedelta
 
 
 app = Flask(__name__)
-
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key='secret123'
 
@@ -380,9 +379,23 @@ def AdminLogin(company=MAIN_COMPANY):
 
         return redirect(url_for('Dashboard'))
 
+@app.route('/home')
+def anasayfa():
+    data = {'devices':
+                {'Asus': 5648,
+                 'Mac': 31234,
+                 'HP': 2006,
+                 }
+            }
+    topv = 0
+    for key,value in data['devices'].items():
+        topv += value
+
+    return render_template("home.html",data=data,topv=topv)
 
 # Logout.
 @app.route('/logout')
+
 def Logout():
 
     # If he is an admin return to 'admin_login' page.
@@ -858,34 +871,253 @@ def TestB2():
 @app.route("/user_results")
 @IsUserLoggedin
 def UserResults():
-
+ 
     # Get user tests.
     userTests = list(FetchFromTheDatabseWithValue("SELECT * FROM tests WHERE id = %s", [session['user_id']]))
     userTests.reverse()
 
     # Get user data
     userRow = FetchFromTheDatabseWithValue("SELECT name, phone, email,company, date FROM users WHERE id = %s", [session['user_id']])[0]
- 
-    Logout()
-    return render_template('test_results.html', tests=userTests, userRow=userRow)
-
     
+    testObj=FetchFromTheDatabseWithValue("SELECT *  FROM tests WHERE id = %s", [id])[0]
+    sumListening=(testObj['lpre_a1']or 0)+(testObj['la1']or 0)+(testObj['la2'] or 0 )+(testObj['lb1'] or 0)+(testObj['lb2'] or 0)
+    sumReading=(testObj['rpre_a1'] or 0)+(testObj['ra1'] or 0)+(testObj['ra2'] or 0) +(testObj['rb1'] or 0)+(testObj['rb2'] or 0)
+    sumVocuablary=(testObj['gpre_a1'] is None)+(testObj['va1'] is None)+(testObj['va2'] or 0) +(testObj['vb2'] or 0)
+    sumFunctional=(testObj['fpre_a1'] or 0)+(testObj['fa1'] or 0)+(testObj['fa2'] or 0) +(testObj['fb1'] or 0)+(testObj['fb2'] or 0)
+    sumGrammer=(testObj['g2pre_a1'] or 0)+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
+    sumPhontics=(testObj['phb1'] or 0)#+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
+   
+    #listingValues
+    labelListening = ["Listening","Total"]
+    colorListening = ["#CCCCCC","#d9534f" ]
+    VListenting=[]
+    if testObj['lpre_a1'] is None:
+       VListenting = [round(sumListening/1*100,2),round(100-sumListening/1*100,2)]
+    elif testObj['la1'] is None:
+         VListenting = [round(sumListening/4*100,2),round(100-sumListening/4*100,2)]
+    elif testObj['la2']==0 :
+         VListenting = [round(sumListening/8*100,2),round(100-sumListening/8*100,2)]
+    elif testObj['lb1']is None:
+        VListenting = [round(sumListening/12*100,2),round(100-sumListening/12*100,2)]
+    elif testObj['lb2']is None:
+        VListenting = [round(sumListening/16*100,2),round(100-sumListening/16*100,2)]
+    else:
+        VListenting = [round(sumListening/20*100,2),round(100-sumListening/20*100,2)]
+
+      #ReadingValues
+    labelsReading = ["Reading","Total"]
+    colorsReading = ["#CCCCCC","#d9534f"]
+    VReading=[]
+    if testObj['rpre_a1'] is None:
+        VReading = [round(sumReading/1*100,2),round(100-sumReading/1*100,2)]
+    elif testObj['ra1'] is None:
+         VReading = [round(sumReading/4*100,2),round(100-sumReading/4*100,2)]
+    elif testObj['ra2']is None :
+         VReading = [round(sumReading/8*100,2),round(100-sumReading/8*100,2)]
+    elif testObj['rb1']is None:
+        VReading = [round(sumReading/12*100,2),round(100-sumReading/12*100,2)]
+    elif testObj['rb2']is None:
+        VReading = [round(sumReading/16*100,2),round(100-sumReading/16*100,2)]
+    else:
+        VReading = [round(sumReading/20*100,2),round(100-sumReading/20*100,2)]
+
+      #VocabularyValues
+    labelsVocabulary = ["Vocabulary","Total"]
+    colorsVocabulary = ["#CCCCCC","#d9534f"]
+    VVocabulary=[]
+    if testObj['gpre_a1'] is None:
+        VVocabulary = [round(sumVocuablary/1*100,2),round(100-sumVocuablary/1*100,2)]
+    elif testObj['va1'] is None:
+         VVocabulary = [round(sumVocuablary/4*100,2),round(100-sumVocuablary/4*100,2)]
+    elif testObj['va2']is None :
+         VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
+    elif testObj['vb2']is None:
+        VVocabulary = [round(sumVocuablary/12*100,2),round(100-sumVocuablary/12*100,2)]
+    else:
+        VVocabulary = [round(sumVocuablary/16*100,2),round(100-sumVocuablary/16*100,2)]
+
+     #Functional Language Values
+    labelsFunctional  = ["Functional","Total"]
+    colorsFunctional  = ["#CCCCCC","#d9534f"]
+    VFunctional =[]
+    if testObj['fpre_a1'] is None:
+        VFunctional = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
+    elif testObj['fa1'] is None:
+         VFunctional = [round(sumFunctional/4*100,2),round(100-sumFunctional/4*100,2)]
+    elif testObj['fa2']is None :
+         VFunctional = [round(sumFunctional/8*100,2),round(100-sumFunctional/8*100,2)]
+    elif testObj['fb1']is None:
+        VFunctional = [round(sumFunctional/12*100,2),round(100-sumFunctional/12*100,2)]
+    elif testObj['fb2']is None:
+        VFunctional = [round(sumFunctional/16*100,2),round(100-sumFunctional/16*100,2)]
+    else:
+        VFunctional = [round(sumFunctional/20*100,2),round(100-sumFunctional/20*100,2)]
+
+    #Grammer  Values
+    labelsGrammer  = ["Grammer","Total"]
+    colorsGrammer  = ["#CCCCCC","#d9534f"]
+    VGrammer =[]
+    if testObj['g2pre_a1'] is None:
+        VGrammer = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
+    elif testObj['ga1'] is None:
+         VGrammer = [round(sumGrammer/8*100,2),round(100-sumGrammer/8*100,2)]
+    elif testObj['ga2']is None :
+         VGrammer = [round(sumGrammer/16*100,2),round(100-sumGrammer/16*100,2)]
+    elif testObj['gb1']is None:
+        VGrammer = [round(sumGrammer/24*100,2),round(100-sumGrammer/24*100,2)]
+    elif testObj['gb2']is None:
+        VGrammer = [round(sumGrammer/32*100,2),round(100-sumGrammer/32*100,2)]
+    else:
+        VGrammer = [round(sumGrammer/40*100,2),round(100-sumGrammer/40*100,2)]
+
+    #phonetics Language Values
+    labelsphonetics  = ["Phonetics","Total"]
+    colorsphonetics  = ["#CCCCCC","#d9534f"]
+    Vphonetics =[]
+    if testObj['phb1'] is None:
+        Vphonetics = [round(sumPhontics/1*100,2),round(100-sumPhontics/1*100,2)]
+    else:
+        Vphonetics = [round(sumPhontics/4*100,2),round(100-sumPhontics/4*100,2)]
+
+    Logout()
+    #def chart():
+       #return render_template('chart.html', set=zip(values, labels, colors))
+ 
+   
+    return render_template('test_results.html', tests=userTests, userRow=userRow, 
+       set=zip(VListenting, labelListening, colorListening),
+    setReading=zip(VReading, labelsReading, colorsReading)
+    ,setVocab=zip(VVocabulary, labelsVocabulary, colorsVocabulary)
+    ,setFun=zip(VFunctional, labelsFunctional, colorsFunctional)
+    ,setGrammer=zip(VGrammer, labelsGrammer, colorsGrammer)
+    ,setphonetics=zip(Vphonetics, labelsphonetics, colorsphonetics))
+
 # Tests results page for admins.
 @app.route('/tests_results/<string:id>')
 @IsAdmin
 def TestsResults(id):
-
     # Get user tests.
     userTests = list(FetchFromTheDatabseWithValue("SELECT * FROM tests WHERE id = %s", [id]))
     userTests.reverse()
-
     userRow = FetchFromTheDatabseWithValue("SELECT * FROM users WHERE id = %s", [id])[0]
-    
+   #chart joe
+
+    testObj=FetchFromTheDatabseWithValue("SELECT *  FROM tests WHERE id = %s", [id])[0]
+    sumListening=(testObj['lpre_a1']or 0)+(testObj['la1']or 0)+(testObj['la2'] or 0 )+(testObj['lb1'] or 0)+(testObj['lb2'] or 0)
+    sumReading=(testObj['rpre_a1'] or 0)+(testObj['ra1'] or 0)+(testObj['ra2'] or 0) +(testObj['rb1'] or 0)+(testObj['rb2'] or 0)
+    sumVocuablary=(testObj['gpre_a1'] is None)+(testObj['va1'] is None)+(testObj['va2'] or 0) +(testObj['vb2'] or 0)
+    sumFunctional=(testObj['fpre_a1'] or 0)+(testObj['fa1'] or 0)+(testObj['fa2'] or 0) +(testObj['fb1'] or 0)+(testObj['fb2'] or 0)
+    sumGrammer=(testObj['g2pre_a1'] or 0)+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
+    sumPhontics=(testObj['phb1'] or 0)#+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
+   
+    #listingValues
+    labelListening = ["Listening","Total"]
+    colorListening = ["#CCCCCC","#d9534f" ]
+    VListenting=[]
+    if testObj['lpre_a1'] is None:
+       VListenting = [round(sumListening/1*100,2),round(100-sumListening/1*100,2)]
+    elif testObj['la1'] is None:
+         VListenting = [round(sumListening/4*100,2),round(100-sumListening/4*100,2)]
+    elif testObj['la2']==0 :
+         VListenting = [round(sumListening/8*100,2),round(100-sumListening/8*100,2)]
+    elif testObj['lb1']is None:
+        VListenting = [round(sumListening/12*100,2),round(100-sumListening/12*100,2)]
+    elif testObj['lb2']is None:
+        VListenting = [round(sumListening/16*100,2),round(100-sumListening/16*100,2)]
+    else:
+        VListenting = [round(sumListening/20*100,2),round(100-sumListening/20*100,2)]
+
+      #ReadingValues
+    labelsReading = ["Reading","Total"]
+    colorsReading = ["#CCCCCC","#d9534f"]
+    VReading=[]
+    if testObj['rpre_a1'] is None:
+        VReading = [round(sumReading/1*100,2),round(100-sumReading/1*100,2)]
+    elif testObj['ra1'] is None:
+         VReading = [round(sumReading/4*100,2),round(100-sumReading/4*100,2)]
+    elif testObj['ra2']is None :
+         VReading = [round(sumReading/8*100,2),round(100-sumReading/8*100,2)]
+    elif testObj['rb1']is None:
+        VReading = [round(sumReading/12*100,2),round(100-sumReading/12*100,2)]
+    elif testObj['rb2']is None:
+        VReading = [round(sumReading/16*100,2),round(100-sumReading/16*100,2)]
+    else:
+        VReading = [round(sumReading/20*100,2),round(100-sumReading/20*100,2)]
+
+      #VocabularyValues
+    labelsVocabulary = ["Vocabulary","Total"]
+    colorsVocabulary = ["#CCCCCC","#d9534f"]
+    VVocabulary=[]
+    if testObj['gpre_a1'] is None:
+        VVocabulary = [round(sumVocuablary/1*100,2),round(100-sumVocuablary/1*100,2)]
+    elif testObj['va1'] is None:
+         VVocabulary = [round(sumVocuablary/4*100,2),round(100-sumVocuablary/4*100,2)]
+    elif testObj['va2']is None :
+         VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
+    elif testObj['vb2']is None:
+        VVocabulary = [round(sumVocuablary/12*100,2),round(100-sumVocuablary/12*100,2)]
+    else:
+        VVocabulary = [round(sumVocuablary/16*100,2),round(100-sumVocuablary/16*100,2)]
+
+     #Functional Language Values
+    labelsFunctional  = ["Functional","Total"]
+    colorsFunctional  = ["#CCCCCC","#d9534f"]
+    VFunctional =[]
+    if testObj['fpre_a1'] is None:
+        VFunctional = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
+    elif testObj['fa1'] is None:
+         VFunctional = [round(sumFunctional/4*100,2),round(100-sumFunctional/4*100,2)]
+    elif testObj['fa2']is None :
+         VFunctional = [round(sumFunctional/8*100,2),round(100-sumFunctional/8*100,2)]
+    elif testObj['fb1']is None:
+        VFunctional = [round(sumFunctional/12*100,2),round(100-sumFunctional/12*100,2)]
+    elif testObj['fb2']is None:
+        VFunctional = [round(sumFunctional/16*100,2),round(100-sumFunctional/16*100,2)]
+    else:
+        VFunctional = [round(sumFunctional/20*100,2),round(100-sumFunctional/20*100,2)]
+
+    #Grammer  Values
+    labelsGrammer  = ["Grammer","Total"]
+    colorsGrammer  = ["#CCCCCC","#d9534f"]
+    VGrammer =[]
+    if testObj['g2pre_a1'] is None:
+        VGrammer = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
+    elif testObj['ga1'] is None:
+         VGrammer = [round(sumGrammer/8*100,2),round(100-sumGrammer/8*100,2)]
+    elif testObj['ga2']is None :
+         VGrammer = [round(sumGrammer/16*100,2),round(100-sumGrammer/16*100,2)]
+    elif testObj['gb1']is None:
+        VGrammer = [round(sumGrammer/24*100,2),round(100-sumGrammer/24*100,2)]
+    elif testObj['gb2']is None:
+        VGrammer = [round(sumGrammer/32*100,2),round(100-sumGrammer/32*100,2)]
+    else:
+        VGrammer = [round(sumGrammer/40*100,2),round(100-sumGrammer/40*100,2)]
+
+    #phonetics Language Values
+    labelsphonetics  = ["Phonetics","Total"]
+    colorsphonetics  = ["#CCCCCC","#d9534f"]
+    Vphonetics =[]
+    if testObj['phb1'] is None:
+        Vphonetics = [round(sumPhontics/1*100,2),round(100-sumPhontics/1*100,2)]
+    else:
+        Vphonetics = [round(sumPhontics/4*100,2),round(100-sumPhontics/4*100,2)]
+
     # Check the accessability for admin
     if userRow['company'] != session["admin_company"]:
         return render_template("error_messages.html", message="You are not allowed to view this user!")
+    #anasayfa()
+    return render_template('test_resultsPass.html', tests=userTests, userRow=userRow,
+     set=zip(VListenting, labelListening, colorListening),
+    setReading=zip(VReading, labelsReading, colorsReading)
+    ,setVocab=zip(VVocabulary, labelsVocabulary, colorsVocabulary)
+    ,setFun=zip(VFunctional, labelsFunctional, colorsFunctional)
+    ,setGrammer=zip(VGrammer, labelsGrammer, colorsGrammer)
+    ,setphonetics=zip(Vphonetics, labelsphonetics, colorsphonetics),
+
+
+
     
-    return render_template('test_resultsPass.html', tests=userTests, userRow=userRow)
+    )
 
 # Delete user.
 @app.route('/delete/<string:id>/')
@@ -994,7 +1226,7 @@ def PassTest(id, test):
 
     # Change the pass test value of that user.
     PutChangesInDatabase("UPDATE users SET " + test + " = %s WHERE id = %s AND company = %s", [passValue, id, session["admin_company"]])
-
+   
     return redirect('/tests_results/{0}'.format(id))
 
 
@@ -1034,6 +1266,7 @@ def DownloadUsers():
     cache_timeout=0,
     attachment_filename='users.csv',
     as_attachment=True)
+
 
 
 # Edit the time to add 2 hours to the GMT.

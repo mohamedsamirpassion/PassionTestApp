@@ -19,7 +19,7 @@
         <!-- crossorigin="anonymous"></script> -->
 
 <meta charset="UTF-8">
- <script src='../static/js/Chart.min.js'></script> 
+
         <style type="text/css" media="print">
             .hideMeInPrint { display: none; }
         </style>
@@ -174,161 +174,68 @@
             {% endfor %}
         </div>
 <br>
-  {% if not "admin_logged_in" in session %}
+</div>
+     <div class="col-sm-4" id="chartContainer" style="height: 500px;"></div> 
+	 </div>
+        {% if not "admin_logged_in" in session %}
             <h3>
                 <b>Contact us</b>
                 <a href="https://www.facebook.com/passiondottraining" target="_blank"><img src="{{ url_for('static', filename='facebook_icon.png') }}" alt="facebook_icon" class="c"   height="25px"></a>
                 <a href="http://www.passion-assessment.com/" target="_blank"><img src="{{ url_for('static', filename='web_icon.png') }}" alt="website_icon" class="c"   height="25px"></a>
             </h3>
         {% endif %}
-</div>
-     <!-- <div class="col-sm-4" id="chartContainer" style="height: 500px;"></div>  -->
- <div class="col-sm-4">	
-  <div class="col-sm-5">
- 
-	<canvas id="chartListening" ></canvas>
-	 </div>  
-	 <div class="col-sm-6">	
-	<canvas id="chartReading" ></canvas>
-	 </div>  
-
-	  <div class="col-sm-5">
- 	<br> 
-	<canvas id="chartVocab"> </canvas>
-	 </div>
-	  <div class="col-sm-6">	
-	  	<br> 
-	<canvas id="chartFun" ></canvas>
-	 </div> 
-	   <div class="col-sm-5">
- 	<br> 
-	<canvas id="chartGrammer"> </canvas>
-	 </div>
-	  <div class="col-sm-6">	
-	  	<br> 
-	<canvas id="chartphonetics" ></canvas>
-	 </div> 
-	  </div>
-	 
-	 </div>
-      
 		
-<script>
-   var pieDataListening = [
-            {% for item,labelListening,colorListening in set %}
-                {
-                    value: {{item}},
-                    label: "{{labelListening}}%",
-                    color : "{{colorListening}}",
-					
-                },
-                {% endfor %}
- 
- 
-         ];
- 
-   // get bar chart canvas
-   var mychart = document.getElementById("chartListening").getContext("2d");
- showTooltips: false
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartListening").getContext("2d")).Pie(pieDataListening);
-   
-  
-   var pieDataReading = [
-            {% for itemReading,labelsReading,colorsReading in setReading %}
-                {
-                    value: {{itemReading}},
-                    label: "{{labelsReading}}%",
-                    color : "{{colorsReading}}",
-					
-                },
-                {% endfor %}
- 
- 
-         ];
- 
-   // get bar chart canvas
-   var mychart1 = document.getElementById("chartReading").getContext("2d");
- 
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartReading").getContext("2d")).Pie(pieDataReading);
-   
-   
-   
-     var pieDataVocab = [
-            {% for itemVocabulary,labelsVocabulary,colorsVocabulary in setVocab %}
-                {
-                    value: {{itemVocabulary}},
-                    label: "{{labelsVocabulary}}%",
-                    color : "{{colorsVocabulary}}",
-					
-                },
-                {% endfor %}
- 
- 
-         ];
- 
-   // get bar chart canvas
-   var mychart = document.getElementById("chartVocab").getContext("2d");
- 
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartVocab").getContext("2d")).Pie(pieDataVocab);
- 
- 
-    var pieDataFun = [
-            {% for itemFun,labelsFunctional,colorsFunctional in setFun %}
-                {
-                    value: {{itemFun}},
-                    label: "{{labelsFunctional}}%",
-                    color : "{{colorsFunctional}}",
-                },
-                {% endfor %}
- 
-         ];
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartFun").getContext("2d")).Pie(pieDataFun);
-   
-    var pieDataGrammer = [
-            {% for itemGrammmer,labelsGrammer,colorsGrammer in setGrammer %}
-                {
-                    value: {{itemGrammmer}},
-                    label: "{{labelsGrammer}}%",
-                    color : "{{colorsGrammer}}",
-                },
-                {% endfor %}
- 
-         ];
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartGrammer").getContext("2d")).Pie(pieDataGrammer);
-   
-      var pieDataphonetics = [
-            {% for itemphonetics,labelsphonetics,colorsphonetics in setphonetics %}
-                {
-                    value: {{itemphonetics}},
-                    label: "{{labelsphonetics}}%",
-                    color : "{{colorsphonetics}}",
-                },
-                {% endfor %}
- 
-         ];
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartphonetics").getContext("2d")).Pie(pieDataphonetics);
-</script>		
     </body>
 	
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script>
+ window.onload = function() {
+            topcnt = 24
+            var points = []
+            $("table tr#logs ").each(function (i) {
+                var tmp_d;
+                $("td#device", this).each(function (j) {
+                    tmp_d = $(this).text()
+                });
+				
+                $("td#count", this).each(function (j) {
+                    percent = parseInt($(this).text()) * 100 / topcnt
+                    points.push({y: percent , label: tmp_d})
+                });
+            });
 
+        <!-- window.onload = function() { -->
+            <!-- topcnt = 24 -->
+            <!-- var points = [] -->
+            <!-- $("table tr#logs ").each(function (i) { -->
+                <!-- var tmp_d; -->
+                <!-- $("td#count", this).each(function (j) { -->
+                    <!-- tmp_d = $(this).text() -->
+                <!-- }); -->
+                <!-- $("td#device", this).each(function (j) { -->
+                    <!-- percent = parseInt($(this).text()) / 24 -->
+                    <!-- points.push({y: percent , label: tmp_d}) -->
+                <!-- }); -->
+            <!-- }); -->
+
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                title: {
+                    text: "Charts of Result"
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 300,
+                    yValueFormatString: "##0.00\"%\"",
+                    indexLabel: "{label} {y}",
+                    dataPoints: points
+                }]
+            });
+            chart.render();
+        }
+
+  </script>
 
 
 
