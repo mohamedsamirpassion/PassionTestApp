@@ -8,7 +8,7 @@
         <link rel="icon" href="../static/passion-icon_p.png">
 
 <meta charset="UTF-8">
- <script src='../static/js/Chart.min.js'></script> 
+ <!-- <script src='../static/js/Chart.min.js'></script>  -->
         <style type="text/css" media="print">
             .hideMeInPrint { display: none; }
         </style>
@@ -30,7 +30,7 @@
             </nav>
             {% endif %}
 			<div class="row"> 
-			<div class="col-sm-8" >
+			<div class="col-sm-12" >
         <div   style="padding: 5px; padding-left: 20px;">
 
                 <table class="table" style="border-radius: 25px;">
@@ -185,156 +185,8 @@
         {% endif %}
 		</div>
 </div>
-<div class="row">
-    <div class="col-sm-5">
 
-        <canvas id="chartListening" ></canvas>
-        <span style="padding-left:115px;font-weight:bold;">Listening</span>
-    </div>  
-         <div class="col-sm-6">	
-        <canvas id="chartReading" ></canvas>
-        <span style="padding-left:115px;font-weight:bold;">Reading</span>
-         </div>  
-</div>
+ </div>
 
-<div class="row">
-  <div class="col-sm-5">
- <br> 
-<canvas id="chartVocab"> </canvas>
-<span style="padding-left:115px;font-weight:bold;">Vocabulary</span>
- </div>
-  <div class="col-sm-6">	
-      <br> 
-<canvas id="chartFun" ></canvas>
-<span style="padding-left:115px;font-weight:bold;">Functional</span>
- </div> 
-</div> 
-<div class="row">
-   <div class="col-sm-5">
- <br> 
-<canvas id="chartGrammer"> </canvas>
-<span style="padding-left:115px;font-weight:bold;">Grammar</span>
- </div>
-  <div class="col-sm-6">	
-      <br> 
-<canvas id="chartphonetics" ></canvas>
-<span style="padding-left:115px;font-weight:bold;">Phonetics</span>
- </div> 
-  </div>
-</div>
- </div>
-		<script>
-   var pieDataListening = [
-            {% for item,labelListening,colorListening in set %}
-                {
-                    value: {{item}},
-                    label: "{{labelListening}}%",
-                    color : "{{colorListening}}",
-					
-                },
-                {% endfor %}
- 
- 
-         ];
- 
-   // get bar chart canvas
-   var mychart = document.getElementById("chartListening").getContext("2d");
- showTooltips: false
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartListening").getContext("2d")).Pie(pieDataListening);
-   
-  
-   var pieDataReading = [
-            {% for itemReading,labelsReading,colorsReading in setReading %}
-                {
-                    value: {{itemReading}},
-                    label: "{{labelsReading}}%",
-                    color : "{{colorsReading}}",
-					
-                },
-                {% endfor %}
- 
- 
-         ];
- 
-   // get bar chart canvas
-   var mychart1 = document.getElementById("chartReading").getContext("2d");
- 
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartReading").getContext("2d")).Pie(pieDataReading);
-   
-   
-   
-     var pieDataVocab = [
-            {% for itemVocabulary,labelsVocabulary,colorsVocabulary in setVocab %}
-                {
-                    value: {{itemVocabulary}},
-                    label: "{{labelsVocabulary}}%",
-                    color : "{{colorsVocabulary}}",
-					
-                },
-                {% endfor %}
- 
- 
-         ];
- 
-   // get bar chart canvas
-   var mychart = document.getElementById("chartVocab").getContext("2d");
- 
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartVocab").getContext("2d")).Pie(pieDataVocab);
- 
- 
-    var pieDataFun = [
-            {% for itemFun,labelsFunctional,colorsFunctional in setFun %}
-                {
-                    value: {{itemFun}},
-                    label: "{{labelsFunctional}}%",
-                    color : "{{colorsFunctional}}",
-                },
-                {% endfor %}
- 
-         ];
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartFun").getContext("2d")).Pie(pieDataFun);
-   
-    var pieDataGrammer = [
-            {% for itemGrammmer,labelsGrammer,colorsGrammer in setGrammer %}
-                {
-                    value: {{itemGrammmer}},
-                    label: "{{labelsGrammer}}%",
-                    color : "{{colorsGrammer}}",
-                },
-                {% endfor %}
- 
-         ];
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartGrammer").getContext("2d")).Pie(pieDataGrammer);
-   
-      var pieDataphonetics = [
-            {% for itemphonetics,labelsphonetics,colorsphonetics in setphonetics %}
-                {
-                    value: {{itemphonetics}},
-                    label: "{{labelsphonetics}}%",
-                    color : "{{colorsphonetics}}",
-                },
-                {% endfor %}
- 
-         ];
-   steps = 10
-   max = 10
-   // draw pie chart
-   new Chart(document.getElementById("chartphonetics").getContext("2d")).Pie(pieDataphonetics);
-</script>	
     </body>
 </html>
