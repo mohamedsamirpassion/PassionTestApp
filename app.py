@@ -882,14 +882,14 @@ def UserResults():
         testObj=FetchFromTheDatabseWithValue("SELECT *  FROM tests WHERE id = %s", [id])[0]
         sumListening=(testObj['lpre_a1']or 0)+(testObj['la1']or 0)+(testObj['la2'] or 0 )+(testObj['lb1'] or 0)+(testObj['lb2'] or 0)
         sumReading=(testObj['rpre_a1'] or 0)+(testObj['ra1'] or 0)+(testObj['ra2'] or 0) +(testObj['rb1'] or 0)+(testObj['rb2'] or 0)
-        sumVocuablary=(testObj['gpre_a1'] is None)+(testObj['va1'] is None)+(testObj['va2'] or 0) +(testObj['vb2'] or 0)
+        sumVocuablary=(testObj['va1'] or 0)+(testObj['va2'] or 0) +(testObj['vb2'] or 0)
         sumFunctional=(testObj['fpre_a1'] or 0)+(testObj['fa1'] or 0)+(testObj['fa2'] or 0) +(testObj['fb1'] or 0)+(testObj['fb2'] or 0)
-        sumGrammer=(testObj['g2pre_a1'] or 0)+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
+        sumGrammer=(testObj['gpre_a1'] or 0)+(testObj['g2pre_a1'] or 0)+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
         sumPhontics=(testObj['phb1'] or 0)#+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
     
         #listingValues
-        labelListening = ["Listening","Total"]
-        colorListening = ["#CCCCCC","#d9534f" ]
+        labelListening = ["Listening",""]
+        colorListening = ["#e79827","#872460" ]
         VListenting=[]
         if testObj['lpre_a1'] is None:
             VListenting = [round(sumListening/1*100,2),round(100-sumListening/1*100,2)]
@@ -905,8 +905,8 @@ def UserResults():
             VListenting = [round(sumListening/20*100,2),round(100-sumListening/20*100,2)]
 
         #ReadingValues
-        labelsReading = ["Reading","Total"]
-        colorsReading = ["#CCCCCC","#d9534f"]
+        labelsReading = ["Reading",""]
+        colorsReading = ["#e79827","#872460" ]
         VReading=[]
         if testObj['rpre_a1'] is None:
             VReading = [round(sumReading/1*100,2),round(100-sumReading/1*100,2)]
@@ -923,22 +923,22 @@ def UserResults():
 
         #VocabularyValues
         labelsVocabulary = ["Vocabulary","Total"]
-        colorsVocabulary = ["#CCCCCC","#d9534f"]
+        colorsVocabulary = ["#e79827","#872460" ]
         VVocabulary=[]
-        if testObj['gpre_a1'] is None:
+        # if testObj['gpre_a1'] is None:
+        #     VVocabulary = [round(sumVocuablary/1*100,2),round(100-sumVocuablary/1*100,2)]
+        if testObj['va1'] is None:
             VVocabulary = [round(sumVocuablary/1*100,2),round(100-sumVocuablary/1*100,2)]
-        elif testObj['va1'] is None:
-            VVocabulary = [round(sumVocuablary/4*100,2),round(100-sumVocuablary/4*100,2)]
         elif testObj['va2']is None :
-            VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
+            VVocabulary = [round(sumVocuablary/4*100,2),round(100-sumVocuablary/4*100,2)]
         elif testObj['vb2']is None:
-            VVocabulary = [round(sumVocuablary/12*100,2),round(100-sumVocuablary/12*100,2)]
+            VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
         else:
-            VVocabulary = [round(sumVocuablary/16*100,2),round(100-sumVocuablary/16*100,2)]
+            VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
 
         #Functional Language Values
         labelsFunctional  = ["Functional","Total"]
-        colorsFunctional  = ["#CCCCCC","#d9534f"]
+        colorsFunctional  = ["#e79827","#872460" ]
         VFunctional =[]
         if testObj['fpre_a1'] is None:
             VFunctional = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
@@ -954,25 +954,27 @@ def UserResults():
             VFunctional = [round(sumFunctional/20*100,2),round(100-sumFunctional/20*100,2)]
 
         #Grammer  Values
-        labelsGrammer  = ["Grammar","Total"]
-        colorsGrammer  = ["#CCCCCC","#d9534f"]
+        labelsGrammer  = ["Grammar",""]
+        colorsGrammer  = ["#e79827","#872460"]
         VGrammer =[]
-        if testObj['g2pre_a1'] is None:
-            VGrammer = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
+        if testObj['gpre_a1'] is None:
+            VGrammer = [round(sumGrammer/1*100,2),round(100-sumGrammer/1*100,2)]
+        elif testObj['g2pre_a1'] is None:
+            VGrammer = [round(sumGrammer/4*100,2),round(100-sumGrammer/4*100,2)]
         elif testObj['ga1'] is None:
-            VGrammer = [round(sumGrammer/8*100,2),round(100-sumGrammer/8*100,2)]
+            VGrammer = [round(sumGrammer/12*100,2),round(100-sumGrammer/12*100,2)]
         elif testObj['ga2']is None :
-            VGrammer = [round(sumGrammer/16*100,2),round(100-sumGrammer/16*100,2)]
+            VGrammer = [round(sumGrammer/20*100,2),round(100-sumGrammer/20*100,2)]
         elif testObj['gb1']is None:
-            VGrammer = [round(sumGrammer/24*100,2),round(100-sumGrammer/24*100,2)]
+            VGrammer = [round(sumGrammer/28*100,2),round(100-sumGrammer/28*100,2)]
         elif testObj['gb2']is None:
-            VGrammer = [round(sumGrammer/32*100,2),round(100-sumGrammer/32*100,2)]
+            VGrammer = [round(sumGrammer/36*100,2),round(100-sumGrammer/36*100,2)]
         else:
-            VGrammer = [round(sumGrammer/40*100,2),round(100-sumGrammer/40*100,2)]
+            VGrammer = [round(sumGrammer/44*100,2),round(100-sumGrammer/44*100,2)]
 
         #phonetics Language Values
-        labelsphonetics  = ["Phonetics","Total"]
-        colorsphonetics  = ["#CCCCCC","#d9534f"]
+        labelsphonetics  = ["Phonetics",""]
+        colorsphonetics  = ["#e79827","#872460" ]
         Vphonetics =[]
         if testObj['phb1'] is None:
             Vphonetics = [round(sumPhontics/1*100,2),round(100-sumPhontics/1*100,2)]
@@ -1007,20 +1009,20 @@ def TestsResults(id):
         testObj=FetchFromTheDatabseWithValue("SELECT *  FROM tests WHERE id = %s", [id])[0]
         sumListening=(testObj['lpre_a1']or 0)+(testObj['la1']or 0)+(testObj['la2'] or 0 )+(testObj['lb1'] or 0)+(testObj['lb2'] or 0)
         sumReading=(testObj['rpre_a1'] or 0)+(testObj['ra1'] or 0)+(testObj['ra2'] or 0) +(testObj['rb1'] or 0)+(testObj['rb2'] or 0)
-        sumVocuablary=(testObj['gpre_a1'] is None)+(testObj['va1'] is None)+(testObj['va2'] or 0) +(testObj['vb2'] or 0)
+        sumVocuablary=(testObj['va1'] or 0)+(testObj['va2'] or 0) +(testObj['vb2'] or 0)
         sumFunctional=(testObj['fpre_a1'] or 0)+(testObj['fa1'] or 0)+(testObj['fa2'] or 0) +(testObj['fb1'] or 0)+(testObj['fb2'] or 0)
-        sumGrammer=(testObj['g2pre_a1'] or 0)+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
+        sumGrammer=(testObj['gpre_a1'] or 0)+(testObj['g2pre_a1'] or 0)+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
         sumPhontics=(testObj['phb1'] or 0)#+(testObj['ga1'] or 0)+(testObj['ga2'] or 0) +(testObj['gb1'] or 0)+(testObj['gb2'] or 0)
     
         #listingValues
-        labelListening = ["Listening","Total"]
-        colorListening = ["#CCCCCC","#d9534f" ]
+        labelListening = ["Listening",""]
+        colorListening = ["#e79827","#872460" ]
         VListenting=[]
         if testObj['lpre_a1'] is None:
             VListenting = [round(sumListening/1*100,2),round(100-sumListening/1*100,2)]
         elif testObj['la1'] is None:
             VListenting = [round(sumListening/4*100,2),round(100-sumListening/4*100,2)]
-        elif testObj['la2']is None :
+        elif testObj['la2']==0 :
             VListenting = [round(sumListening/8*100,2),round(100-sumListening/8*100,2)]
         elif testObj['lb1']is None:
             VListenting = [round(sumListening/12*100,2),round(100-sumListening/12*100,2)]
@@ -1030,8 +1032,8 @@ def TestsResults(id):
             VListenting = [round(sumListening/20*100,2),round(100-sumListening/20*100,2)]
 
         #ReadingValues
-        labelsReading = ["Reading","Total"]
-        colorsReading = ["#CCCCCC","#d9534f"]
+        labelsReading = ["Reading",""]
+        colorsReading = ["#e79827","#872460" ]
         VReading=[]
         if testObj['rpre_a1'] is None:
             VReading = [round(sumReading/1*100,2),round(100-sumReading/1*100,2)]
@@ -1048,22 +1050,22 @@ def TestsResults(id):
 
         #VocabularyValues
         labelsVocabulary = ["Vocabulary","Total"]
-        colorsVocabulary = ["#CCCCCC","#d9534f"]
+        colorsVocabulary = ["#e79827","#872460" ]
         VVocabulary=[]
-        if testObj['gpre_a1'] is None:
+        # if testObj['gpre_a1'] is None:
+        #     VVocabulary = [round(sumVocuablary/1*100,2),round(100-sumVocuablary/1*100,2)]
+        if testObj['va1'] is None:
             VVocabulary = [round(sumVocuablary/1*100,2),round(100-sumVocuablary/1*100,2)]
-        elif testObj['va1'] is None:
-            VVocabulary = [round(sumVocuablary/4*100,2),round(100-sumVocuablary/4*100,2)]
         elif testObj['va2']is None :
-            VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
+            VVocabulary = [round(sumVocuablary/4*100,2),round(100-sumVocuablary/4*100,2)]
         elif testObj['vb2']is None:
-            VVocabulary = [round(sumVocuablary/12*100,2),round(100-sumVocuablary/12*100,2)]
+            VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
         else:
-            VVocabulary = [round(sumVocuablary/16*100,2),round(100-sumVocuablary/16*100,2)]
+            VVocabulary = [round(sumVocuablary/8*100,2),round(100-sumVocuablary/8*100,2)]
 
         #Functional Language Values
         labelsFunctional  = ["Functional","Total"]
-        colorsFunctional  = ["#CCCCCC","#d9534f"]
+        colorsFunctional  = ["#e79827","#872460" ]
         VFunctional =[]
         if testObj['fpre_a1'] is None:
             VFunctional = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
@@ -1079,25 +1081,27 @@ def TestsResults(id):
             VFunctional = [round(sumFunctional/20*100,2),round(100-sumFunctional/20*100,2)]
 
         #Grammer  Values
-        labelsGrammer  = ["Grammar","Total"]
-        colorsGrammer  = ["#CCCCCC","#d9534f"]
+        labelsGrammer  = ["Grammar",""]
+        colorsGrammer  = ["#e79827","#872460"]
         VGrammer =[]
-        if testObj['g2pre_a1'] is None:
-            VGrammer = [round(sumFunctional/1*100,2),round(100-sumFunctional/1*100,2)]
+        if testObj['gpre_a1'] is None:
+            VGrammer = [round(sumGrammer/1*100,2),round(100-sumGrammer/1*100,2)]
+        elif testObj['g2pre_a1'] is None:
+            VGrammer = [round(sumGrammer/4*100,2),round(100-sumGrammer/4*100,2)]
         elif testObj['ga1'] is None:
-            VGrammer = [round(sumGrammer/8*100,2),round(100-sumGrammer/8*100,2)]
+            VGrammer = [round(sumGrammer/12*100,2),round(100-sumGrammer/12*100,2)]
         elif testObj['ga2']is None :
-            VGrammer = [round(sumGrammer/16*100,2),round(100-sumGrammer/16*100,2)]
+            VGrammer = [round(sumGrammer/20*100,2),round(100-sumGrammer/20*100,2)]
         elif testObj['gb1']is None:
-            VGrammer = [round(sumGrammer/24*100,2),round(100-sumGrammer/24*100,2)]
+            VGrammer = [round(sumGrammer/28*100,2),round(100-sumGrammer/28*100,2)]
         elif testObj['gb2']is None:
-            VGrammer = [round(sumGrammer/32*100,2),round(100-sumGrammer/32*100,2)]
+            VGrammer = [round(sumGrammer/36*100,2),round(100-sumGrammer/36*100,2)]
         else:
-            VGrammer = [round(sumGrammer/40*100,2),round(100-sumGrammer/40*100,2)]
+            VGrammer = [round(sumGrammer/44*100,2),round(100-sumGrammer/44*100,2)]
 
         #phonetics Language Values
-        labelsphonetics  = ["Phonetics","Total"]
-        colorsphonetics  = ["#CCCCCC","#d9534f"]
+        labelsphonetics  = ["Phonetics",""]
+        colorsphonetics  = ["#e79827","#872460" ]
         Vphonetics =[]
         if testObj['phb1'] is None:
             Vphonetics = [round(sumPhontics/1*100,2),round(100-sumPhontics/1*100,2)]
