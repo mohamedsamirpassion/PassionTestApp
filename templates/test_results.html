@@ -185,34 +185,44 @@
         {% endif %}
 		</div>
 </div>
- <div class="col-sm-4">	
-  <div class="col-sm-5">
- 
-	<canvas id="chartListening" ><label>Listening</label>  </canvas>
-	 </div>  
-	 <div class="col-sm-6">	
-	<canvas id="chartReading" ></canvas>
-	 </div>  
+<div class="row">
+    <div class="col-sm-5">
 
-	  <div class="col-sm-5">
- 	<br> 
-	<canvas id="chartVocab"> </canvas>
-	 </div>
-	  <div class="col-sm-6">	
-	  	<br> 
-	<canvas id="chartFun" ></canvas>
-	 </div> 
-	   <div class="col-sm-5">
- 	<br> 
-	<canvas id="chartGrammer"> </canvas>
-	 </div>
-	  <div class="col-sm-6">	
-	  	<br> 
-	<canvas id="chartphonetics" ></canvas>
-	 </div> 
-	  </div>
-	 
-	 </div>
+        <canvas id="chartListening" ></canvas>
+        <span style="padding-left:115px;font-weight:bold;">Listening</span>
+    </div>  
+         <div class="col-sm-6">	
+        <canvas id="chartReading" ></canvas>
+        <span style="padding-left:115px;font-weight:bold;">Reading</span>
+         </div>  
+</div>
+
+<div class="row">
+  <div class="col-sm-5">
+ <br> 
+<canvas id="chartVocab"> </canvas>
+<span style="padding-left:115px;font-weight:bold;">Vocabulary</span>
+ </div>
+  <div class="col-sm-6">	
+      <br> 
+<canvas id="chartFun" ></canvas>
+<span style="padding-left:115px;font-weight:bold;">Functional</span>
+ </div> 
+</div> 
+<div class="row">
+   <div class="col-sm-5">
+ <br> 
+<canvas id="chartGrammer"> </canvas>
+<span style="padding-left:115px;font-weight:bold;">Grammar</span>
+ </div>
+  <div class="col-sm-6">	
+      <br> 
+<canvas id="chartphonetics" ></canvas>
+<span style="padding-left:115px;font-weight:bold;">Phonetics</span>
+ </div> 
+  </div>
+</div>
+ </div>
 		<script>
    var pieDataListening = [
             {% for item,labelListening,colorListening in set %}
