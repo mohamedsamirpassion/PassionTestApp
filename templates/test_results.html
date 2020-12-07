@@ -165,19 +165,17 @@
                    <tr>
                         <th scope="row">Grade</th>
 						
-                      <td><span style="color: black"> This Applicant is </span><b>{% if tests[test].pre_a1 < 9 %}<span style="color: #872460;">Pre_A1 Low &check; </span>{% elif tests[test].pre_a1 ==9 or tests[test].pre_a1 <=16 %}<span style="color: #872460;">Pre_A1 Mid &check; </span>
-						{% elif  tests[test].pre_a1 ==17 or tests[test].pre_a1 ==18 %}<span style="color: #872460;">Pre_A1 High &check; </span>
+                       <td><span style="color: black"> This Applicant is </span><b>{% if tests[test].pre_a1 < 9 %}<span style="color: #872460;">Pre_A1 Low &check; </span>{% elif tests[test].pre_a1 ==9 or tests[test].pre_a1 <=16 %}<span style="color: #872460;">Pre_A1 Mid &check; </span>
+						{% elif  tests[test].pre_a1 ==17 or tests[test].pre_a1 ==18 %}<span style="color: #872460;">Pre_A1 High &check; </span>{% elif  tests[test].pre_a1 >= 19 and tests[test].a1 is none  %}<span style="color: #872460;">Pre_A1 Pass &check; </span>
 						{% elif  tests[test].a1 <9 %}<span style="color: #872460;">A1 Low &check; </span>
-						{% elif tests[test].a1 ==9 or tests[test].a1 <=16 %}<span style="color: #872460;">A1 Mid &check; </span>{% elif  tests[test].a1 ==17 or tests[test].a1 ==18 %}<span style="color: #872460;">A1 High &check; </span>
+						{% elif tests[test].a1 ==9 or tests[test].a1 <=16 %}<span style="color: #872460;">A1 Mid &check; </span>{% elif  tests[test].a1 ==17 or tests[test].a1 ==18 %}<span style="color: #872460;">A1 High &check; </span>{% elif  tests[test].a1 >= 19 and tests[test].a2 is none  %}<span style="color: #872460;">A1 Passed &check; </span>
 						{% elif  tests[test].a2 <9 %}<span style="color: #872460;">A2 Low &check; </span>
-						{% elif tests[test].a2 ==9 or tests[test].a2 <=16 %}<span style="color: #872460;">A2 Mid &check; </span>{% elif  tests[test].a2 ==17 or tests[test].a2 ==18 %}<span style="color: #872460;">A2 High &check; </span>
-						{% elif  tests[test].b1 <9 %}<span style="color: #872460;">B1 Low &check; </span>
-						{% elif tests[test].b1 ==9 or tests[test].b1 <=16 %}<span style="color: #872460;">B1 Mid &check; </span>{% elif  tests[test].b1 ==17 or tests[test].b1 ==18 %}<span style="color: #872460;">B1 High &check; </span>
+						{% elif tests[test].a2 ==9 or tests[test].a2 <=16 %}<span style="color: #872460;">A2 Mid &check; </span>{% elif  tests[test].a2 ==17 or tests[test].a2 ==18 %}<span style="color: #872460;">A2 High &check; </span>{% elif  tests[test].a2 >= 19 and tests[test].b1 is none %}<span style="color: #872460;">A2 Passed &check; </span>
+						{% elif  tests[test].b1 <9  %}<span style="color: #872460;">B1 Low &check; </span>
+						{% elif tests[test].b1 ==9 or tests[test].b1 <=16 %}<span style="color: #872460;">B1 Mid &check; </span>{% elif  tests[test].b1 ==17 or tests[test].b1 ==18 %}<span style="color: #872460;">B1 High &check; </span>{% elif  tests[test].b1 >= 19 and tests[test].b2 is none %}<span style="color: #872460;">B1 Passed &check; </span>
 						{% elif  tests[test].b2 <9 %}<span style="color: #872460;">B2 Low &check; </span>
-						{% elif tests[test].b2 ==9 or tests[test].b2 <=16 %}<span style="color: #872460;">B2 Mid &check; </span>{% elif  tests[test].b2 ==17 or tests[test].b2 ==18 %}<span style="color: #872460;">B2 High &check; </span>
-						
-						
-						
+						{% elif tests[test].b2 ==9 or tests[test].b2 <=16 %}<span style="color: #872460;">B2 Mid &check; </span>{% elif  tests[test].b2 ==17 or tests[test].b2 ==18 %}<span style="color: #872460;">B2 High &check; </span>{% elif  tests[test].b2 >= 19 %}<span style="color: #872460;">B2 Passed &check; </span>
+
 						{% endif %}</b></td>
                         <!-- <td><b>{% if tests[test].a1 and tests[test].a1 >= 19 %}<span style="color: green;">Passed &check; </span>{% else %}<span style="color: red;"> Failed &cross; </span>{% endif %}</b></td> -->
                         <!-- <td><b>{% if tests[test].a2 and tests[test].a2 >= 19 %}<span style="color: green;">Passed &check; </span>{% else %}<span style="color: red;"> Failed &cross; </span>{% endif %}</b></td> -->
