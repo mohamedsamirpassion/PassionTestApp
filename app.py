@@ -335,7 +335,7 @@ def AdminLogin(company=MAIN_COMPANY):
 
     # In 'GET' request case.
     if request.method == 'GET':
-        return render_template("admin_login.html", company=company)
+        return render_template("NewLogin.html", company=company)
 
     # In 'POST' request case.
     if request.method == 'POST':
@@ -352,7 +352,7 @@ def AdminLogin(company=MAIN_COMPANY):
         # Check if the user existe.
         admin = cur.execute("SELECT * FROM admins WHERE phone = %s AND company = %s", [phone, company])
         if not admin:
-            return render_template("admin_login.html", error='Invalid login.')
+            return render_template("NewLogin.html", error='Invalid login.')
 
         # Select the admin row.
         adminRow = cur.fetchone()
@@ -363,11 +363,11 @@ def AdminLogin(company=MAIN_COMPANY):
         # Verify the password.
         verified = sha256_crypt.verify(password, adminRow['password'])
         if not verified:
-            return render_template("admin_login.html", error='Invalid password.')
+            return render_template("NewLogin.html", error='Invalid password.')
 
         # Check the validity of the admin.
         if not adminRow['admin']:
-            return render_template("admin_login.html", error='You are not an admin yet.')
+            return render_template("NewLogin.html", error='You are not an admin yet.')
 
         session['admin_logged_in'] = True
         session['admin_name'] = adminRow['name']
