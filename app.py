@@ -31,17 +31,17 @@ if 'DB_USER' in os.environ :
     app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 else :
    # Local
-    app.config["MYSQL_HOST"] = "localhost"
-    app.config["MYSQL_USER"] = "root"
-    app.config["MYSQL_PASSWORD"] = "12345@Test"
-    app.config["MYSQL_DB"] = "passiontest"
-    app.config["MYSQL_CURSORCLASS"] = "DictCursor"
-#Server
-    # app.config["MYSQL_HOST"] = "eu-mm-auto-dub-03-b.cleardb.net"
-    # app.config["MYSQL_USER"] = "bf1c346b9ba807"
-    # app.config["MYSQL_PASSWORD"] = "f6fe0b06"
-    # app.config["MYSQL_DB"] = "heroku_4171de8c90d24ee"
+    # app.config["MYSQL_HOST"] = "localhost"
+    # app.config["MYSQL_USER"] = "root"
+    # app.config["MYSQL_PASSWORD"] = "12345@Test"
+    # app.config["MYSQL_DB"] = "passiontest"
     # app.config["MYSQL_CURSORCLASS"] = "DictCursor"
+#Server
+    app.config["MYSQL_HOST"] = "eu-mm-auto-dub-03-b.cleardb.net"
+    app.config["MYSQL_USER"] = "bf1c346b9ba807"
+    app.config["MYSQL_PASSWORD"] = "f6fe0b06"
+    app.config["MYSQL_DB"] = "heroku_4171de8c90d24ee"
+    app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 
 mysql = MySQL(app)
