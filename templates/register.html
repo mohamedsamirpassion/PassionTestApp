@@ -14,7 +14,7 @@
 <label style="font-size: 18px">Phone<span style="color: red;">*</span></label>
 <input type="number" name="phone" placeholder="Phone number" class="form-control" required>
 
-{% if company =='seera' %}
+{% if company =='seera' or company=='seeragroup' %}
 <label style="font-size: 18px">Email<span style="color: red;">*</span></label>
 <input type="email" name="email" placeholder="John_Doe@seera.sa" class="form-control" required>
 <input type="hidden" name="hrid" placeholder="HRID" class="form-control" >
@@ -27,6 +27,11 @@
  
 <input type="hidden" name="sfid" placeholder="SFID" class="form-control" >
 {% endif %}
+{% if company=='seeragroup' %}
+ <label style="font-size: 18px">Location<span style="color: red;">*</span></label> 
+ <select name="location" id="location" required class="form-control" > <option value="Egypt">Egypt</option> <option value="KSA">KSA</option> 
+ <option value="UAE">UAE</option> </select>
+ {% endif %}
 <label style="font-size: 18px">Password<span style="color: red;">*</span></label>
 <input type="password" name="password" placeholder="Password" class="form-control" id="passwordlabel" required>
 <label style="font-size: 18px">Confirm Password<span style="color: red;">*</span></label>

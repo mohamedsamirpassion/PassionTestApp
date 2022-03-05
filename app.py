@@ -159,6 +159,7 @@ def Register(company=MAIN_COMPANY):
         email = request.form['email']
         hrid = request.form['hrid']
         sfid = request.form['sfid']
+        location = request.form['location']
         password = request.form['password']
         confirm = request.form['confirm']
 
@@ -199,8 +200,8 @@ def Register(company=MAIN_COMPANY):
 
         # Insert user data in the 'users' table.
         try:
-            PutChangesInDatabase("INSERT INTO users(name, phone, email,hrId,sfId, password, company) VALUES(%s, %s, %s, %s, %s,%s, %s)",
-            (name, phone, email,hrid,sfid, password, company))
+            PutChangesInDatabase("INSERT INTO users(name, phone, email,hrId,sfId,location, password, company) VALUES(%s, %s, %s, %s,%s, %s,%s, %s)",
+            (name, phone, email,hrid,sfid,location, password, company))
         except Exception as e:
             print(e)
             
@@ -1238,7 +1239,7 @@ def DownloadUsers():
     
     # Get all users data.
    # users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email,sfId, date,case when got_pre_a1=0 then 'Pre' when got_a1=0 then 'A1' when got_a2=0 then 'A2' when got_b1=0 then 'B1' when got_b2=0 then 'B2' end , case when p_pre_a1=0 then 'Pre' when p_a1=0 then 'A1' when p_a2=0 then 'A2' when p_b1 =0 then 'B1'  end FROM users WHERE company = %s", [session["admin_company"]])
-    users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email,sfId, date FROM users WHERE company = %s", [session["admin_company"]])
+    users = FetchFromTheDatabseWithValue("SELECT id, name, phone, email,sfId,location, date FROM users WHERE company = %s", [session["admin_company"]])
 
     # Get the last test for each user.
     usersTests = []
@@ -1251,7 +1252,7 @@ def DownloadUsers():
 
         # Write the file head.
         writer.writerow([
-            'ID', 'Name', 'Phone', 'Email','SFID','Registration date',"Exam date", 
+            'ID', 'Name', 'Phone', 'Email','SFID','Location','Registration date',"Exam date", 
             'Listening_Pre_A1(4)', 'Reading_Pre_A1(4)', 'Grammar_Pre_A1(4)', 'Functional_language_Pre_A1(4)', 'Grammar_Pre_A1(8)', 'Pre_A1(24)',
             'listening_A1(4)', 'Reading_A1(4)', 'Vocabulary_A1(4)', 'Functional_language_A1(4)', 'Grammar_A1(8)', 'A1(24)', 
             'listening_A2(4)', 'Reading_A2(4)', 'Vocabulary_A2(4)', 'Functional_language_A2(4)', 'Grammar_A2(8)', 'A2(24)', 
