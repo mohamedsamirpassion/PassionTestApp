@@ -31,6 +31,8 @@
  <label style="font-size: 18px">Location<span style="color: red;">*</span></label> 
  <select name="location" id="location" required class="form-control" > <option value="Egypt">Egypt</option> <option value="KSA">KSA</option> 
  <option value="UAE">UAE</option> </select>
+ {%else%}
+<input type="hidden" name="location" placeholder="location" class="form-control" >
  {% endif %}
 <label style="font-size: 18px">Password<span style="color: red;">*</span></label>
 <input type="password" name="password" placeholder="Password" class="form-control" id="passwordlabel" required>
