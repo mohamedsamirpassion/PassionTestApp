@@ -10,7 +10,7 @@ import pytz
 from pytz import timezone
 import tzlocal
 from datetime import timedelta
-
+from flask_paginate import Pagination, get_page_args
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -441,18 +441,31 @@ def IsAdmin(func):
 
 
 # Dashboard page.
+ROWS_PER_PAGE = 20
 @app.route('/dashboard')
 @IsAdmin
 def Dashboard(): 
-
+    # Set the pagination configuration
+    #page = request.args.get('page', 1, type=int)
     # Select all users from users table.
     users = list(FetchFromTheDatabseWithValue("SELECT * FROM users WHERE company = %s", [session['admin_company']]))
 
     # Reverse users order to show up in the dashboard from newest to oldest.
     users.reverse()
-
-    return render_template('dashboard.html', users=users)
-
+    total = len(users) #users.fetchone()[0]
+    #users = users.query.paginate(page=page, per_page=ROWS_PER_PAGE)
+    #pagination = Pagination(page=page, total=users.count(),search='', record_name='users')
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                           per_page_parameter='per_page')
+    users=users[offset: offset + 50]                                     
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+   
+    #return render_template('dashboard.html', users=users, pagination=pagination)
+    return render_template('dashboard2.html',
+                           users=users,
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination)
 
 @app.route("/dashboard/<user_id>/set-access", methods=['POST'])
 @IsAdmin
@@ -476,9 +489,22 @@ def DashboardSearch():
     results.reverse()
 
     if request.method == 'POST':
-        return jsonify(results)
+       # return jsonify(results)
 
-    return render_template("dashboard.html", users=results)
+        total = len(results)
+        page, per_page, offset = get_page_args(page_parameter='page',
+                                            per_page_parameter='per_page')
+        results=results[offset: offset + 50]                                     
+        pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+        return jsonify(results)
+        return render_template('dashboard2.html',
+                            users=results,
+                            page=page,
+                            per_page=per_page,
+                            pagination=pagination)
+
+
+   # return render_template("dashboard.html", users=results)
 
 
 # Check if user logged in.
@@ -1247,7 +1273,7 @@ def DownloadUsers():
         usersTests.append(FetchFromTheDatabse("SELECT * , case when (pre_a1<19 or a1 is null)  then 'Pre' when (a1<19 or a2 is null ) then 'A1' when (a2<19 or b1 is null ) then 'A2' when (b1<19 or b2 is null) then 'B1' when (b2<19 ) then 'B2' when (b2>19) then 'C1'     end   FROM tests WHERE test_num = (SELECT COUNT(*) FROM tests WHERE id = {0}) AND id = {1}".format(user['id'], user['id'])))
 
     # Wite the data in the 'users,csv' file.
-    with open("users.csv", 'w', newline='') as csvFile:
+    with open("users.csv", 'w',encoding='utf-8', newline='') as csvFile:
         writer = csv.writer(csvFile)
 
         # Write the file head.
