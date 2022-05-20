@@ -11,7 +11,7 @@ from pytz import timezone
 import tzlocal
 from datetime import timedelta
 from flask_paginate import Pagination, get_page_args
-
+ 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key='secret123'
