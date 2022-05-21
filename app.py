@@ -312,7 +312,7 @@ def Login(company=MAIN_COMPANY):
         session['user_logged_in'] = True
         session['user_id'] = str(userRow['id'])
         session['user_company'] = company
-
+ 
         if userRow['p_b1']:
             PutChangesInDatabase("UPDATE users SET got_pre_a1 = 1, f_pre_a1 = 1, got_a1 = 1, f_a1 = 1, got_a2 = 1, f_a2 = 1, got_b1 = 1, f_b1 = 1 WHERE id = %s", [session['user_id']])
             return redirect(url_for("MovingForward"))
